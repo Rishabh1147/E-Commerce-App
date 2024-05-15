@@ -7,7 +7,7 @@ const app = express.Router();
 app.post("/new", adminOnly, singleUpload, newProduct);
 // /api/v1/products/latest
 app.get("/latest", getLatestProducts);
-// /api/v1/products/all  To get all products with filters 
+// /api/v1/products/all To get all products with filters 
 app.get("/all", getAllProducts);
 // /api/v1/products/categories
 app.get("/categories", getAllCategories);

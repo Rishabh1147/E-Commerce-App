@@ -12,7 +12,7 @@ export const adminOnly =  TryCatch(async (req,res,next) => {
 
     if(!user) return next(new ErrorHandler("User Not Found", 404));
 
-    if(user.role !== "admin") return next(new ErrorHandler("Not Authorised to preform this action", 404));
+    if(user.role !== "admin") return next(new ErrorHandler("Not Authorised to preform this action", 403));
 
 
     next();
