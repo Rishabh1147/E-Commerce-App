@@ -100,7 +100,7 @@ import { myCache } from "../app.js";
 
         await reduceStock(orderItems);
 
-        await invalidateCache({
+        invalidateCache({
             product: true,
             order: true,
             admin : true,
@@ -134,7 +134,7 @@ import { myCache } from "../app.js";
 
         await order.save();
 
-        await invalidateCache({
+        invalidateCache({
             product: false, 
             order: true, 
             admin : true,
@@ -158,7 +158,7 @@ import { myCache } from "../app.js";
 
         await order.deleteOne();
 
-        await invalidateCache({
+        invalidateCache({
             product: false, 
             order: true, 
             admin : true,

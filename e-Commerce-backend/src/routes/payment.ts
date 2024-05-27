@@ -2,9 +2,12 @@ import exp from "constants";
 import  express  from "express";
 import { deleteUser, getAllUsers, getUser, newUser } from "../controllers/user.js";
 import { adminOnly } from "../middlewares/auth.js";
-import { allCoupons,deleteCoupon,givenDiscount, newCoupon } from "../controllers/payment.js";
+import { allCoupons,createPayment,deleteCoupon,givenDiscount, newCoupon } from "../controllers/payment.js";
 
 const app = express.Router();
+
+//Route  - /api/v1/payment/create
+app.post("/create",createPayment);
 
 //Route  - /api/v1/payment/discount
 app.get("/discount", givenDiscount);
