@@ -22,7 +22,7 @@ export const createPayment = TryCatch(async (req,res,next)=> {
 
 export const newCoupon = TryCatch(async (req,res,next)=> {
     
-    const { coupon,amount} = req.body;
+    const {coupon,amount} = req.body;
 
     if(!coupon || !amount) return next(new ErrorHandler("Please Enter both coupon and amount", 400));
 

@@ -5,7 +5,8 @@ import Header from './components/header';
 import {Toaster} from "react-hot-toast";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
-import { userExist, userNotExist } from './redux/userReducer';
+import { userExist, userNotExist } from './redux/reducer/userReducer';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from './redux/api/userAPI';
 import { UserReducerIninitialState } from './types/reducerTypes';

@@ -71,7 +71,7 @@ const Productmanagement = () => {
     const res = await updateProduct({
       formData,
       userID : user!._id,
-      productID : data!.product._id,
+      productId : data!.product._id,
     })
 
     responseToast(res,navigate,"/admin/product");
@@ -81,7 +81,7 @@ const Productmanagement = () => {
 
     const res = await deleteProduct({
       userID : user!._id,
-      productID : data!.product._id,
+      productId : data!.product._id,
     })
 
     responseToast(res,navigate,"/admin/product");

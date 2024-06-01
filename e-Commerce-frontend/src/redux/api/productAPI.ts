@@ -48,16 +48,16 @@ export const productAPI = createApi({
             invalidatesTags:["product"],
         }),
         updateProduct : builder.mutation<MessageResponse, UpdateProductRequest>({
-            query : ({formData,userID, productID}) => ({
-                url: `${productID}?id=${userID}`,
+            query : ({formData,userID, productId}) => ({
+                url: `${productId}?id=${userID}`,
                 method: "PUT",
                 body: formData,
             }),
             invalidatesTags:["product"],
         }),
         deleteProduct : builder.mutation<MessageResponse, DeleteProductRequest>({
-            query : ({userID, productID}) => ({
-                url: `${productID}?id=${userID}`,
+            query : ({userID, productId}) => ({
+                url: `${productId}?id=${userID}`,
                 method: "DELETE",
             }),
             invalidatesTags:["product"],
