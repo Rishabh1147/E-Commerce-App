@@ -4,7 +4,7 @@ import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { UserReducerIninitialState } from "../../../types/reducerTypes";
 import { useSelector } from "react-redux";
 import { useDeleteProductMutation, useProductDetailsQuery, useUpdateProductMutation } from "../../../redux/api/productAPI";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { server } from "../../../redux/store";
 import { SkeletonLoader } from "../../../components/loader";
 import { responseToast } from "../../../utils/feature";
@@ -19,7 +19,7 @@ const Productmanagement = () => {
     const params = useParams()
     const navigate = useNavigate();
 
-    const {data, isLoading} = useProductDetailsQuery(params.id!);
+    const {data, isLoading,isError} = useProductDetailsQuery(params.id!);
 
 
 
@@ -97,6 +97,9 @@ const Productmanagement = () => {
 
     }
   }, [data]);
+
+  if(isError) return <Navigate to= {"/404"}/>
+
   
   return (
     <div className="admin-container">
