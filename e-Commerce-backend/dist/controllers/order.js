@@ -3,6 +3,7 @@ import { Order } from "../models/order.js";
 import { invalidateCache, reduceStock } from "../utils/feature.js";
 import ErrorHandler from "../utils/utility-class.js";
 import { myCache } from "../app.js";
+import { User } from "../models/user.js";
 export const myOrders = TryCatch(async (req, res, next) => {
     const { id: user } = req.query;
     const key = `my-orders-${user}`;
@@ -32,6 +33,21 @@ export const allOrders = TryCatch(async (req, res, next) => {
         orders,
     });
 });
+// export const getSingleOrder = TryCatch(async (req,res,next) => {
+//     const {id} = req.params;
+//     const key = `{order-${id}`;
+//     let order;
+//     if(myCache.has(key)) order = JSON.parse(myCache.get(key) as string);
+//     else{
+//         order = await Order.findById(id).populate("user","name");
+//         if(!order) return next(new ErrorHandler("Order Not Found", 404));
+//         myCache.set(key,JSON.stringify(order));
+//     } 
+//     return res.status(200).json({
+//         success: true,
+//         order,
+//     })
+// });
 export const getSingleOrder = TryCatch(async (req, res, next) => {
     const { id } = req.params;
     const key = `{order-${id}`;
@@ -39,9 +55,13 @@ export const getSingleOrder = TryCatch(async (req, res, next) => {
     if (myCache.has(key))
         order = JSON.parse(myCache.get(key));
     else {
-        order = await Order.findById(id).populate("user", "name");
+        order = await Order.findById(id);
         if (!order)
             return next(new ErrorHandler("Order Not Found", 404));
+        const userDetails = await User.findOne({ name: order.user });
+        if (userDetails) {
+            order.user = userDetails.name;
+        }
         myCache.set(key, JSON.stringify(order));
     }
     return res.status(200).json({

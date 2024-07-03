@@ -5,7 +5,8 @@ import ErrorHandler from "../utils/utility-class.js";
 
 export const createPayment = TryCatch(async (req,res,next)=> {
     
-    const { amount} = req.body;
+    const { amount } = req.body;
+    console.log(amount);
 
     if(!amount) return next(new ErrorHandler("Please Enter Amount", 400));
 

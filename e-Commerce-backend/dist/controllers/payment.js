@@ -4,6 +4,7 @@ import { Coupon } from "../models/coupon.js";
 import ErrorHandler from "../utils/utility-class.js";
 export const createPayment = TryCatch(async (req, res, next) => {
     const { amount } = req.body;
+    console.log(amount);
     if (!amount)
         return next(new ErrorHandler("Please Enter Amount", 400));
     const payment = await stripe.paymentIntents.create({

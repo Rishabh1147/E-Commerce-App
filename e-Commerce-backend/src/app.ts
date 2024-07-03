@@ -43,7 +43,6 @@ app.get("/" , (req, res) => {
     res.send("api is working");
 })
 
-
 app.use("/api/v1/user",userRoute);
 app.use("/api/v1/product",productRoute);
 app.use("/api/v1/order",orderRoute);

@@ -1,13 +1,22 @@
 import { Request } from "express";
 import { TryCatch } from "../middlewares/error.js";
-import { NewOrderReqeustBody } from "../types/types.js";
+import { NewOrderReqeustBody, OrderItemType, ShippingInfoType } from "../types/types.js";
 import { Order } from "../models/order.js";
 import { invalidateCache, reduceStock } from "../utils/feature.js";
 import ErrorHandler from "../utils/utility-class.js";
 import { myCache } from "../app.js";
+import { User } from "../models/user.js";
 
-
-
+type OrderType = {
+    shippingInfo:ShippingInfoType,
+    user: string;
+    subtotal: number;
+    tax: number;
+    shippingCharges: number;
+    discount: number;
+    total: number;
+    orderItems:OrderItemType;
+};
 
     export const myOrders = TryCatch(async (req,res,next) => {
         const {id:user} = req.query;
@@ -46,25 +55,47 @@ import { myCache } from "../app.js";
         })
     });
 
-    export const getSingleOrder = TryCatch(async (req,res,next) => {
-        const {id} = req.params;
+    // export const getSingleOrder = TryCatch(async (req,res,next) => {
+    //     const {id} = req.params;
+    //     const key = `{order-${id}`;
+
+    //     let order;
+
+    //     if(myCache.has(key)) order = JSON.parse(myCache.get(key) as string);
+
+    //     else{
+    //         order = await Order.findById(id).populate("user","name");
+    //         if(!order) return next(new ErrorHandler("Order Not Found", 404));
+
+    //         myCache.set(key,JSON.stringify(order));
+    //     } 
+
+    //     return res.status(200).json({
+    //         success: true,
+    //         order,
+    //     })
+    // });
+
+    export const getSingleOrder = TryCatch(async (req, res, next) => {
+        const { id } = req.params;
         const key = `{order-${id}`;
-
-        let order;
-
-        if(myCache.has(key)) order = JSON.parse(myCache.get(key) as string);
-
-        else{
-            order = await Order.findById(id).populate("user","name");
-            if(!order) return next(new ErrorHandler("Order Not Found", 404));
-
-            myCache.set(key,JSON.stringify(order));
-        } 
-
+        let order: OrderType;
+        if (myCache.has(key))
+            order = JSON.parse(myCache.get(key) as string);
+        else {
+            order = await Order.findById(id) as OrderType;
+            if (!order)
+                return next(new ErrorHandler("Order Not Found", 404));
+            const userDetails = await User.findOne({ name: order.user });
+            if (userDetails) {
+                order.user = userDetails.name; 
+            }
+            myCache.set(key, JSON.stringify(order));
+        }
         return res.status(200).json({
             success: true,
             order,
-        })
+        });
     });
 
     export const newOrder = TryCatch(async (
